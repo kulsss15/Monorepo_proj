@@ -29,6 +29,6 @@ COPY ./tests ./tests
 COPY ./libs /app/libs
 
 # Expose the port for FastAPI
-EXPOSE 8000
+EXPOSE 8001
 
-CMD ["poetry", "run", "uvicorn", "src.ai_service.ml_main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["poetry", "run", "uvicorn", "src.ai_service.ml_main:app", "--host", "0.0.0.0", "--port", "8001"]

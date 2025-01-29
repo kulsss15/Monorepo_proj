@@ -1,6 +1,9 @@
 from typing import Dict
 from fastapi import HTTPException
 from libs.utils.src.utils.api_client import fetch_weather
+from libs.utils.src.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 def process_weather_decision(weather_data: Dict, city: str) -> Dict:
     """
@@ -17,7 +20,7 @@ def process_weather_decision(weather_data: Dict, city: str) -> Dict:
     weather_main = weather_data.get("weather", [{}])[0].get("main", "").lower()
     temp = weather_data.get("main", {}).get("temp")
     feels_like = weather_data.get("main", {}).get("feels_like")
-
+    logger.info(f"function - libs.utils.src.utils.weather_logic.process_weather_decision => weather_main: {weather_main}, temp: {temp}, feels_like : {feels_like}")
     # Default decision template
     decision = {"decision": "Yes", "reason": f"The weather in {city} is clear and suitable to go out."}
 
@@ -48,9 +51,9 @@ def should_go_out(api_key: str, city: str) -> Dict:
     Raises:
         HTTPException: If the API key is not configured or if there's an error fetching weather data.
     """
+    logger.info(f"function - libs.utils.src.utils.env_loader.should_go_out => api_key : {api_key} & city : {city}")
     if not api_key:
         raise HTTPException(status_code=500, detail="API key is not configured or missing.")
-
     try:
         # Fetch weather data
         weather_data = fetch_weather(api_key, city)

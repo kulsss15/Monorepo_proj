@@ -3,7 +3,7 @@ services:
   ai_service:
     build: ./services/ai_service
     ports:
-      - "8000:8000"
+      - "8001:8001"
     volumes:
       - ./services/ai_service:/app
     env_file:
@@ -12,7 +12,7 @@ services:
   weather_service:
     build: ./services/weather_service
     ports:
-      - "8001:8001"
+      - "8002:8002"
     volumes:
       - ./services/weather_service:/app
     env_file:

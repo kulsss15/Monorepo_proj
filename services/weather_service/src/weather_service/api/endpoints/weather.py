@@ -18,7 +18,7 @@ class WeatherResponse(BaseModel):
 
 
 @router.get("/weather", response_model=WeatherResponse)
-def get_weather(city: str = Query(..., min_length=1, example="London")):
+def get_weather(api_key, city: str = Query(..., min_length=1, examples="London")):
     """
     Fetch weather data for a given city and make a go-out decision.
 
@@ -28,22 +28,20 @@ def get_weather(city: str = Query(..., min_length=1, example="London")):
     Returns:
         WeatherResponse: Weather details and decision.
     """
-    api_key = settings.OPENWEATHER_API_KEY
+    #api_key = settings.OPENWEATHER_API_KEY
 
     try:
         # Fetch weather data and process the decision using the new logic
         decision_data = should_go_out(api_key, city)
-
         # Fetch the weather data again for the response details
         weather_data = fetch_weather(api_key, city)
         temp = weather_data["main"]["temp"] - 273.15  # Convert Kelvin to Celsius
         condition = weather_data["weather"][0]["main"]
         description = weather_data["weather"][0]["description"]
-
-        # Use the decision from the weather_logic
+        # Use the decision from the weathr_logic
         decision = decision_data["decision"]
         advice = decision_data["reason"]
-
+        logger.info(f"function - api.endpoints.weather.get_weather => temp : {temp}, condition : {condition}, description : {description}")
         return WeatherResponse(
             temperature=round(temp, 2),
             condition=condition,
@@ -52,7 +50,7 @@ def get_weather(city: str = Query(..., min_length=1, example="London")):
             advice=advice,
         )
     except Exception as e:
-        logger.error(f"Error fetching weather for city {city}: {str(e)}")
+        logger.error(f"function - api.endpoints.weather.get_weather => Error fetching weather for city {city}: {str(e)}")
         raise HTTPException(
             status_code=400, detail="Failed to fetch weather data. Please try again."
         )

@@ -6,6 +6,9 @@ install:
 dev:
 	poetry run uvicorn src.ai_service.ml_main:app --reload
 
+prod:
+	poetry run uvicorn src.ai_service.ml_main:app --reload
+
 lint:
 	poetry run pylint src/
 
@@ -16,4 +19,4 @@ build:
 	docker build -t ai_service .
 
 run:
-	docker run -p 8000:8000 ai_service
+	docker run -d --name weather_service_container -p 8001:8001 weather_service

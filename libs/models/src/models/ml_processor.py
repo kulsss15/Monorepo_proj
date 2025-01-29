@@ -13,21 +13,24 @@ def preprocess_weather_data(weather_data: dict) -> np.ndarray:
     Returns:
         np.ndarray: Preprocessed feature vector.
     """
+    logger.info(f"weather_data : {weather_data}")
     try:
         # Extract temperature in Celsius
         temp_celsius = weather_data.get("main", {}).get("temp", None)
+        logger.info(f"function - libs.models.src.models.preprocess_weather_data => temp celsius : {temp_celsius}")
         if temp_celsius is None:
-            logger.warning("Temperature data missing; defaulting to 0°C.")
+            logger.warning("function - libs.models.src.models.preprocess_weather_data => Temperature data missing; defaulting to 0°C.")
             temp_celsius = 273.15  # Default to 0°C in Kelvin
         #temp_celsius -= 273.15
 
         # Check for bad weather conditions
         weather_condition = weather_data.get("weather", [{}])[0].get("main", "").lower()
+        logger.info(f"function - libs.models.src.models.preprocess_weather_data => weather_condition : {weather_condition}")
         is_bad_weather = 1 if weather_condition in ["rain", "snow", "storm"] else 0
 
         return np.array([temp_celsius, is_bad_weather])
     except Exception as e:
-        logger.error(f"Error preprocessing weather data: {e}")
+        logger.error(f"function - libs.models.src.models.preprocess_weather_data => Error preprocessing weather data: {e}")
         raise ValueError("Invalid weather data format") from e
 
 def make_decision(feature_vector: np.ndarray) -> str:
@@ -40,11 +43,12 @@ def make_decision(feature_vector: np.ndarray) -> str:
     Returns:
         str: "Yes" if the user can go out, "No" otherwise.
     """
+    logger.info(f"function - libs.models.src.models.weather_decision => featuer_vector : {feature_vector}")
     try:
         temp, is_bad_weather = feature_vector
         if is_bad_weather:
             return "No"
         return "Yes"
     except Exception as e:
-        logger.error(f"Error in decision-making process: {e}")
+        logger.error(f"function - libs.models.src.models.weather_decision => Error in decision-making process: {e}")
         raise ValueError("Invalid feature vector format") from e

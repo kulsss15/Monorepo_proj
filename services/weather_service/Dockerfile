@@ -23,9 +23,8 @@ ARG ENV=development
 # Copy source code
 COPY ./src ./src
 COPY ./tests ./tests
-COPY ./libs /app/libs
 
 # Expose the port for FastAPI
-EXPOSE 8001
+EXPOSE 8002
 
-CMD ["poetry", "run", "uvicorn", "src.weather_service.main:app", "--host", "0.0.0.0", "--port", "8001"]
+CMD ["poetry", "run", "uvicorn", "src.weather_service.main:app", "--host", "0.0.0.0", "--port", "8002"]

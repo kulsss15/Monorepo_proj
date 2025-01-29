@@ -26,11 +26,12 @@ def ml_based_decision(
     Returns:
         dict: Decision and reasoning.
     """
+    logger.info(f"request : {request}")
     request_id = request.state.request_id
 
     # Ensure city is provided
     if not city:
-        logger.warning("City parameter is missing", extra={"request_id": request_id})
+        logger.warning(f"functino - ai_service.src.ai_service.ai.ml_based_decision => City parameter is missing", extra={"request_id": request_id})
         raise HTTPException(
             status_code=400,
             detail="Please provide your city name to get the decision."
@@ -40,18 +41,18 @@ def ml_based_decision(
 
     try:
         # Fetch weather data with metric units (Celsius)
-        logger.info("Fetching weather data", extra={"request_id": request_id, "city": city})
+        logger.info(f"functino - ai_service.src.ai_service.ai.ml_based_decision => Fetching weather data", extra={"request_id": request_id, "city": city})
         weather_data = fetch_weather(api_key, city)
 
         # Preprocess data for AI/ML
-        logger.debug("Preprocessing weather data", extra={"request_id": request_id})
+        logger.debug(f"functino - ai_service.src.ai_service.ai.ml_based_decision => Preprocessing weather data", extra={"request_id": request_id})
         features = preprocess_weather_data(weather_data)
 
         # Make an AI-based decision
         decision = make_decision(features)
 
         logger.info(
-            "Decision made successfully",
+            "functino - ai_service.src.ai_service.ai.ml_based_decision => Decision made successfully",
             extra={"request_id": request_id, "decision": decision, "city": city},
         )
 
@@ -62,9 +63,9 @@ def ml_based_decision(
         }
 
     except KeyError as e:
-        logger.error("KeyError while processing weather data", extra={"request_id": request_id, "error": str(e)})
+        logger.error(f"functino - ai_service.src.ai_service.ai.ml_based_decision => KeyError while processing weather data", extra={"request_id": request_id, "error": str(e)})
         raise HTTPException(status_code=500, detail="Unexpected response structure from weather API.")
 
     except Exception as e:
-        logger.error("Unhandled exception", extra={"request_id": request_id, "error": str(e)})
+        logger.error(f"functino - ai_service.src.ai_service.ai.ml_based_decision => Unhandled exception", extra={"request_id": request_id, "error": str(e)})
         raise HTTPException(status_code=500, detail=f"Error processing request: {e}")

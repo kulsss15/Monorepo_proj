@@ -24,9 +24,9 @@ def fetch_weather(api_key: str, city: str) -> Dict:
         HTTPError: If the API response contains an error.
         RequestException: For other network-related issues.
     """
-
+    logger.info(f"api_key {api_key} & city {city}")
     if not city or not city.strip():
-        logger.error("City name is required but was not provided.")
+        logger.error("function - libs.utils.src.utils.api_client.fetch_weather => City name is required but was not provided.")
         raise ValueError("City name cannot be empty.")
 
     params = {
@@ -36,21 +36,21 @@ def fetch_weather(api_key: str, city: str) -> Dict:
     }
 
     try:
-        logger.info("Fetching weather data for city: %s", city)
-        logger.info("Using API key: %s", api_key)
+        logger.info(f"function - libs.utils.src.utils.api_client.fetch_weather => Fetching weather data for city: {city}")
+        logger.info(f"function - libs.utils.src.utils.api_client.fetch_weather => Using API key: {api_key}")
         response = requests.get(
             BASE_URL, params=params, timeout=10
         )  # Set timeout to 10 seconds
         response.raise_for_status()
         data = response.json()
-        logger.info("Weather data fetched successfully for city: %s", city)
+        logger.info(f"function - libs.utils.src.utils.api_client.fetch_weather => Weather data fetched successfully for city: {city}")
         return data
     except requests.exceptions.HTTPError as http_err:
-        logger.error("HTTP error occurred: %s", http_err)
+        logger.error(f"function - libs.utils.src.utils.api_client.fetch_weather => HTTP error occurred: {http_err}")
         raise
     except requests.exceptions.RequestException as req_err:
-        logger.error("Request exception occurred: %s", req_err)
+        logger.error(f"function - libs.utils.src.utils.api_client.fetch_weather => Request exception occurred: {req_err}")
         raise
     except Exception as e:
-        logger.error("Unexpected error occurred while fetching weather data: %s", e)
+        logger.error(f"function - libs.utils.src.utils.api_client.fetch_weather => Unexpected error occurred while fetching weather data: {e}")
         raise

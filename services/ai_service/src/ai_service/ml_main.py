@@ -23,11 +23,12 @@ async def add_request_id_and_log(request: Request, call_next):
     request.state.request_id = request_id
 
     start_time = time.time()
+    logger.info(f"function - ai_service.src.ai_service.ml_main.add_request_id_and_log => request_id : {request_id}, start_time : {start_time}")
     try:
         response = await call_next(request)
     except Exception as exc:
         logger.error(
-            "Unhandled exception in middleware",
+            f"function - ai_service.src.ai_service.ml_main.add_request_id_and_log => Unhandled exception in middleware",
             extra={"request_id": request_id, "error": str(exc)},
         )
         raise exc
@@ -39,7 +40,7 @@ async def add_request_id_and_log(request: Request, call_next):
     response.headers["X-Backend-Version"] = settings.PROJECT_NAME
 
     logger.info(
-        "Request completed",
+        f"function - ai_service.src.ai_service.ml_main.add_request_id_and_log => Request completed",
         extra={
             "request_id": request_id,
             "process_time": f"{process_time:.2f}s",
@@ -59,7 +60,7 @@ async def global_exception_handler(request: Request, exc: Exception):
         request.state.request_id if hasattr(request.state, "request_id") else "unknown"
     )
     logger.error(
-        "Unhandled exception", extra={"request_id": request_id, "error": str(exc)}
+        f"function - ai_service.src.ai_service.ml_main.add_request_id_and_log => Unhandled exception", extra={"request_id": request_id, "error": str(exc)}
     )
     return JSONResponse(
         status_code=500,

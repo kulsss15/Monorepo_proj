@@ -20,11 +20,11 @@ try:
     # settings = settings()
     # Access the API key in your application
     api_key = settings.OPENWEATHER_API_KEY
-    logger.info("Environment variables successfully validated and loaded.")
+    logger.info("function - libs.utils.src.utils.env_loader.load_env => Environment variables successfully validated and loaded.")
 except ValidationError as e:
     # Log detailed error message
     missing_vars = [err['loc'][0] for err in e.errors()]
     logger.error(
-        f"Environment variables validation failed. Missing or invalid variables: {missing_vars}"
+        f"function - libs.utils.src.utils.env_loader.load_env => Environment variables validation failed. Missing or invalid variables: {missing_vars}"
     )
-    raise RuntimeError(f"Environment variables validation failed: {e}")
+    raise RuntimeError(f"function - libs.utils.src.utils.env_loader.load_env => Environment variables validation failed: {e}")
