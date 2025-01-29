@@ -9,7 +9,7 @@ packages = [{ include = "models", from = "src" }]
 python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.0"
+pytest = "^8.3"
 mypy = "^1.0"
 black = "^23.1"
 isort = "^5.12"
