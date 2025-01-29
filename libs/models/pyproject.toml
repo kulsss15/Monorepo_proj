@@ -13,7 +13,7 @@ pytest = "^7.0"
 mypy = "^1.0"
 black = "^23.1"
 isort = "^5.12"
-uvicorn = "^0.22.0"
+uvicorn = "^0.34.0"
 
 [tool.mypy]
 strict_optional = true
