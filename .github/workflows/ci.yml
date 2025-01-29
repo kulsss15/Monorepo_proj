@@ -10,8 +10,7 @@ on:
 
 jobs:
   lint-and-test:
-    runs-on: ubuntu-latest
-
+    runs-on: self-hosted  # Change to AWS self-hosted runner or CodeBuild
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -32,3 +31,47 @@ jobs:
 
       - name: Run Tests
         run: poetry run pytest
+
+  deploy-infra:
+    runs-on: self-hosted
+    needs: lint-and-test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: latest
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Plan Terraform changes
+        run: terraform plan
+
+      - name: Apply Terraform changes
+        run: terraform apply -auto-approve
+
+  deploy-app:
+    runs-on: self-hosted
+    needs: deploy-infra
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS CLI
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region us-east-1
+
+      - name: Deploy to Kubernetes with Helm
+        run: |
+          helm upgrade --install my-app ./helm-chart \
+          --namespace my-namespace \
+          --set image.tag=${{ github.sha }}
+
+      - name: Trigger ArgoCD sync
+        run: |
+          argocd app sync my-app
