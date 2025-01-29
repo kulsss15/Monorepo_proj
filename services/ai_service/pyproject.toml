@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "ai_service"
+version = "0.1.0"
+description = "AI service for the monorepo"
+authors = ["kuldeep <kulsss@gmail.com>"]
+packages = [{ include = "ai_service", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.115"
+numpy = "^2.2"
+pydantic = "^2.10.6"
+uvicorn = "^0.22.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+mypy = "^1.0"
+black = "^23.1"
+isort = "^5.12"
+pylint = "^2.17"
+pre-commit = "^3.3"
+
+[tool.mypy]
+plugins = []

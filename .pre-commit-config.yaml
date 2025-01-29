@@ -1,0 +1,63 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ["--maxkb=500"]  # Prevent committing files larger than 500 KB
+      - id: check-json  # Validate JSON syntax
+      - id: check-xml  # Validate XML syntax
+
+  - repo: https://github.com/psf/black
+    rev: 23.1.0
+    hooks:
+      - id: black
+        args:
+          - "--check"  # Verify formatting without modifying files
+        files: "(services|libs)/.*\\.py"  # Apply Black to Python files in services/libs directories
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        additional_dependencies: [flake8-bugbear]
+        files: "(services|libs)/.*\\.py"  # Only lint Python files in services/libs
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.5.1
+    hooks:
+      - id: mypy
+        args:
+          - "--strict"  # Enable strict type checking
+          - "--config-file=mypy.ini"  # Use monorepo's mypy.ini
+        files: "(services|libs)/.*\\.py"
+
+  - repo: https://github.com/timothycrosley/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        args: ["--profile", "black"]
+        files: "(services|libs)/.*\\.py"
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        args: ["--skip", "B101"]  # Skip assert usage checks
+        files: "(services|libs)/.*\\.py"
+
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v2.42.0
+    hooks:
+      - id: commitizen
+
+  - repo: https://github.com/PyCQA/pylint
+    rev: v2.17.5
+    hooks:
+      - id: pylint
+        args: ["--rcfile=pylintrc"]  # Use custom Pylint configuration
+        files: "(services|libs)/.*\\.py"

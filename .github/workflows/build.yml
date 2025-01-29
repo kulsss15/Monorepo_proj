@@ -1,0 +1,23 @@
+name: Build Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build AI Service Docker Image
+        run: |
+          docker build -t ai_service ./services/ai_service
+
+      - name: Build Weather Service Docker Image
+        run: |
+          docker build -t weather_service ./services/weather_service

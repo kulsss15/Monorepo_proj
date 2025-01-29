@@ -1,0 +1,53 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+.venv/
+env/
+
+# Distribution / packaging
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Poetry
+poetry.lock
+
+# Logs
+*.log
+*.out
+
+# Test reports
+coverage/
+htmlcov/
+
+# Docker
+*.env
+docker-compose.override.yml
+.dockerignore
+.docker/
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Node modules (if any)
+node_modules/
+
+# Secrets
+.env
+*.key
+*.crt

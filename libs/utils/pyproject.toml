@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "utils"
+version = "0.1.0"
+description = "Shared utilities for the monorepo"
+authors = ["kuldeep <kulsss@gmail.com>"]
+packages = [{ include = "utils", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.28"
+uvicorn = "^0.22.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+mypy = "^1.0"
+black = "^23.1"
+isort = "^5.12"
+
+[tool.mypy]
+strict_optional = true

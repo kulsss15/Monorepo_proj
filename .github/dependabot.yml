@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: "/services/ai_service"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: "/services/weather_service"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: "/libs/models"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: "/libs/utils"
+    schedule:
+      interval: "weekly"

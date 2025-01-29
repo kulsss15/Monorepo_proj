@@ -1,0 +1,81 @@
+[tool.poetry]
+name = "Monorepo-Proj"
+version = "0.1.0"
+description = "A monorepo for services and libraries"
+authors = ["Kuldeep <kulsss@gmail.com>"]
+packages = [{ include = "services" }] 
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.115"
+sqlalchemy = "^2.0"
+requests = "^2.28"
+numpy = "^2.2"
+uvicorn = "^0.22.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+pytest-cov = "^3.0"
+mypy = "^1.0"
+black = "^23.1"
+isort = "^5.12"
+pylint = "^2.17"
+pre-commit = "^3.3"
+httpx = "^0.28.1"
+
+[tool.poetry.extras]
+ai-service = ["fastapi", "numpy"]
+weather-service = ["fastapi", "sqlalchemy"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+skip-string-normalization = true
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_third_party = ["fastapi", "sqlalchemy", "requests", "numpy"]
+known_first_party = ["services", "libs"]
+
+[tool.pylint]
+disable = [
+    "C0111",  # Missing docstring
+    "R0801",  # Duplicate code
+    "W0703",  # Broad except
+]
+max-line-length = 88
+good-names = ["db", "id"]
+init-hook = 'import sys; sys.path.extend(["./services", "./libs"])'
+
+[tool.mypy]
+python_version = 3.10
+warn_unused_configs = true
+warn_return_any = true
+check_untyped_defs = true
+strict_optional = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+show_error_codes = true
+plugins = ["sqlalchemy.ext.mypy.plugin"]
+
+# Targeting all services
+[mypy.services]
+disallow_untyped_defs = true
+
+# Targeting all libs
+[mypy.libs]
+disallow_untyped_defs = true
+
+[tool.commitizen]
+version = "2.42.0"
+name = "cz_conventional_commits"
+version_type = "semver"
+
+[build-system]
+requires = ["setuptools", "wheel", "poetry"]
+build-backend = "poetry.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = "--cov=services/ai_service --cov-report=html"

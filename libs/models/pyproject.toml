@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "models"
+version = "0.1.0"
+description = "Shared models for the monorepo"
+authors = ["Kuldeep <kulsss@gmail.com>"]
+packages = [{ include = "models", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+mypy = "^1.0"
+black = "^23.1"
+isort = "^5.12"
+uvicorn = "^0.22.0"
+
+[tool.mypy]
+strict_optional = true
